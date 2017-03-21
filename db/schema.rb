@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170319220447) do
+ActiveRecord::Schema.define(version: 20170325014532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20170319220447) do
     t.string "name"
     t.string "songkick_id"
     t.string "spotify_id"
+    t.index ["songkick_id"], name: "index_artists_on_songkick_id", using: :btree
   end
 
   create_table "concert_artists", force: :cascade do |t|
@@ -43,6 +44,7 @@ ActiveRecord::Schema.define(version: 20170319220447) do
     t.integer  "venue_id"
     t.string   "songkick_id"
     t.datetime "at"
+    t.index ["songkick_id"], name: "index_concerts_on_songkick_id", using: :btree
     t.index ["venue_id"], name: "index_concerts_on_venue_id", using: :btree
   end
 
@@ -147,6 +149,7 @@ ActiveRecord::Schema.define(version: 20170319220447) do
     t.string "songkick_id"
     t.string "name"
     t.string "address"
+    t.index ["songkick_id"], name: "index_venues_on_songkick_id", using: :btree
   end
 
   add_foreign_key "concert_artists", "artists"
@@ -154,7 +157,6 @@ ActiveRecord::Schema.define(version: 20170319220447) do
   add_foreign_key "concert_attendees", "concerts"
   add_foreign_key "concert_attendees", "users"
   add_foreign_key "concerts", "venues"
-  add_foreign_key "email_addresses", "users"
   add_foreign_key "mails", "concerts"
   add_foreign_key "mails", "email_addresses"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"

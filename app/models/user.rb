@@ -9,4 +9,10 @@ class User < ApplicationRecord
   def meta
     Hashie::Mash.new self[:meta]
   end
+
+  class Struct < Dry::Struct
+    attribute :id,     T::String
+    attribute :name,   T::String
+    attribute :emails, T::String
+  end
 end

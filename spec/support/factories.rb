@@ -14,17 +14,26 @@ module Factories
   end
 
   def build_concert **opts
-    instance_double Concert, Hashie::Mash.new({
-      artists: [
-        { name: 'Daughters' }
-      ],
-      venue: { name: '9:30 Club' },
-      at: 3.weeks.from_now
-    }.deep_merge(opts))
+    defaults Concert, opts,
+      venue:       build(:venue, name: '9:30 Club'),
+      artists:     [ build(:artist, name: 'Daughters') ],
+      songkick_id: id,
+      at:          3.weeks.from_now
   end
 
   def build_user **opts
-    defaults User, opts, name: 'Test User'
+    _id = id
+    defaults User::Struct, opts,
+      id:     _id,
+      name:   "User #{_id}",
+      emails: ["user#{_id}@example.com"]
+  end
+
+  def build_tickets **opts
+    defaults Tickets, opts,
+      user:   build(:user),
+      number: rand(1 .. 6),
+      status: Tickets::STATUSES.values.sample
   end
 
   def build_artist **opts

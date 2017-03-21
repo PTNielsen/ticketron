@@ -3,21 +3,18 @@ module Mail
     Unhandled = Class.new StandardError
 
     def call mail
-      parsed  = parse_email mail
-      concert = songkick.search \
-        venue:   parsed.venue,
-        artists: parsed.artists
+      parsed = parse_email mail
 
       repository.add_tickets \
         user:    mail.user,
-        concert: concert,
+        concert: parsed.concert,
         tickets: parsed.tickets,
         method:  parsed.method
 
-      repository.attach_concert mail: mail, concert: concert
+      repository.attach_concert mail: mail, concert: parsed.concert
     rescue Mail::Handler::Unhandled
       notifier.email_unhandled email: mail
-    rescue Songkick::Scraper::ConcertNotFound
+    rescue Songkick::ConcertNotFound
       notifier.email_concert_not_found email: mail
     end
 

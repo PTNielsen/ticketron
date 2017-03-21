@@ -8,7 +8,7 @@ module Mail
     end
 
     def call params
-      mail = repository.create_mail \
+      mail = repository.save_mail \
         from:    params[:from],
         to:      params[:to],
         subject: params[:subject],
